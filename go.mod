@@ -1,4 +1,4 @@
-module github.com/paul-nelson-baker/paulstdlib
+module github.com/paul-nelson-baker/paulstdlib-go
 
 go 1.13
 
