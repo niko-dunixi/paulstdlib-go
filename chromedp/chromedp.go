@@ -3,7 +3,6 @@ package chromedp
 import (
 	"context"
 	"github.com/chromedp/chromedp"
-	"log"
 )
 
 // Literally the same thing as chromedp.DefaultExecAllocatorOptions. The only
