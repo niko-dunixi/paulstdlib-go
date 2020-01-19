@@ -1,7 +1,9 @@
 package chromedp
 
 import (
+	"context"
 	"github.com/chromedp/chromedp"
+	"log"
 )
 
 // Literally the same thing as chromedp.DefaultExecAllocatorOptions. The only
@@ -40,4 +42,15 @@ func VisibleWithDefaultOptions() []chromedp.ExecAllocatorOption {
 		chromedp.Flag("password-store", "basic"),
 		chromedp.Flag("use-mock-keychain", true),
 	}
+}
+
+func VisibleChromedp(ctx context.Context, opts ...chromedp.ContextOption) (context.Context, context.CancelFunc) {
+	allocator, allocCancelFunc := chromedp.NewExecAllocator(ctx, VisibleWithDefaultOptions()...)
+	chromeCtx, chromeCtxCancelFunc := chromedp.NewContext(allocator, opts...)
+	// Wrap both cancel functions and then call them LIFO order
+	dualCancelFunc := func() {
+		chromeCtxCancelFunc()
+		allocCancelFunc()
+	}
+	return chromeCtx, dualCancelFunc
 }
